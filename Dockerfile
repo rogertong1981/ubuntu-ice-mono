@@ -1,5 +1,20 @@
-FROM ubuntu:latest
+FROM ubuntu:14.04
 
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update \
+    && apt-get install -y \
+    git-core \
+    build-essential \
+    gperf \
+    && apt-get clean \
+    #&& rm -rf /var/lib/apt/lists/*
+
+RUN apt-get install -y software-properties-common \
+    && add-apt-repository ppa:maxmind/ppa \
+    && apt-get update \
+    && apt-get install libmaxminddb0 libmaxminddb-dev mmdb-bin
+    
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv 5E6DA83306132997 && \
     apt-add-repository "deb http://zeroc.com/download/apt/ubuntu$(lsb_release -rs) stable main" && \
     apt-get update && apt-get install python-software-properties &&  apt-get install software-properties-common && \
